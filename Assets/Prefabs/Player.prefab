@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 6971367777064856405}
   - component: {fileID: 6054701767343643395}
   - component: {fileID: 5349938502660680395}
-  - component: {fileID: 8455896127327721362}
   - component: {fileID: 4283686020908133520}
   m_Layer: 0
   m_Name: Player
@@ -151,7 +150,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3938678070572782138}
   serializedVersion: 4
-  m_Mass: 70
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -170,62 +169,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &8455896127327721362
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3938678070572782138}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d90ba6530d9bfda47abb4610956b2f44, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerCamera: {fileID: 6677138829524587345}
-  fov: 60
-  invertCamera: 0
-  cameraCanMove: 1
-  mouseSensitivity: 2
-  maxLookAngle: 50
-  lockCursor: 1
-  crosshair: 0
-  crosshairImage: {fileID: 0}
-  crosshairColor: {r: 1, g: 1, b: 1, a: 1}
-  enableZoom: 1
-  holdToZoom: 0
-  zoomKey: 324
-  zoomFOV: 30
-  zoomStepTime: 5
-  playerCanMove: 1
-  walkSpeed: 5
-  maxVelocityChange: 10
-  enableSprint: 1
-  unlimitedSprint: 1
-  sprintKey: 304
-  sprintSpeed: 7
-  sprintDuration: 5
-  sprintCooldown: 0.5
-  sprintFOV: 80
-  sprintFOVStepTime: 10
-  useSprintBar: 0
-  hideBarWhenFull: 1
-  sprintBarBG: {fileID: 0}
-  sprintBar: {fileID: 0}
-  sprintBarWidthPercent: 0.3
-  sprintBarHeightPercent: 0.015
-  enableJump: 1
-  jumpKey: 32
-  jumpPower: 5
-  enableCrouch: 1
-  holdToCrouch: 1
-  crouchKey: 306
-  crouchHeight: 0.75
-  speedReduction: 0.5
-  enableHeadBob: 0
-  joint: {fileID: 0}
-  bobSpeed: 10
-  bobAmount: {x: 0.15, y: 0.05, z: 0}
 --- !u!114 &4283686020908133520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,10 +181,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f972d33ff1075b14bbf242f742bdba9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lockCursor: 1
+  dynamicFov: 1
   fpsCamera: {fileID: 6677138829524587345}
-  fovWhenSprint: 70
+  fovWhenSprint: 65
+  mouseSensitivity: 0.145
+  maxLookAngle: 50
   moveSpeed: 250
-  crouchHeight: 0.5
+  crouchHeight: 0.7
+  jumpForce: 5
+  checkGroundDistance: 1.5
 --- !u!1 &4800582051196120410
 GameObject:
   m_ObjectHideFlags: 0

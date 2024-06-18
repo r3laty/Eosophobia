@@ -1,12 +1,15 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody))]
-public class Movement : MonoBehaviour
+public class FirstPersonController : MonoBehaviour
 {
+    [SerializeField] private bool lockCursor = true;
+    [SerializeField] private bool dynamicFov = true;
     [Header("Camera")]
     [SerializeField] private Camera fpsCamera;
     [SerializeField] private float fovWhenSprint;
+    [SerializeField] private float mouseSensitivity;
+    [SerializeField] private float maxLookAngle = 50f;
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float crouchHeight = 0.5f;
@@ -18,15 +21,16 @@ public class Movement : MonoBehaviour
     private Rigidbody _rb;
 
     private Vector3 _inputVector;
+    private Vector3 _cameraInputVector;
     private Vector3 _originalScale;
 
-    private bool _isCrouch;
-    private bool _isSprint;
-    private bool _isJump;
     private bool _isGrounded;
 
     private float _normalSpeed;
     private float _initialFov;
+
+    private float _pitch;
+    private float _rotationAngle;
 
     private void Awake()
     {
@@ -36,7 +40,6 @@ public class Movement : MonoBehaviour
         _gameInput.Enable();
 
         _gameInput.Gameplay.Jump.performed += Jump;
-        _gameInput.Gameplay.Jump.canceled += Jump_cancaled;
 
         _gameInput.Gameplay.Crouch.performed += Crouch;
         _gameInput.Gameplay.Crouch.canceled += Crouch_canceled;
@@ -47,60 +50,43 @@ public class Movement : MonoBehaviour
     }
     private void Start()
     {
+        if (lockCursor)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+
         _originalScale = transform.localScale;
         _normalSpeed = moveSpeed;
         _initialFov = fpsCamera.fieldOfView;
     }
-
-
     private void Update()
     {
         _inputVector = _gameInput.Gameplay.Movement.ReadValue<Vector3>();
+        _cameraInputVector = _gameInput.Gameplay.Camera.ReadValue<Vector3>();
     }
     private void FixedUpdate()
     {
-        Vector3 inputDirection = new Vector3(-_inputVector.x, _rb.velocity.y, -_inputVector.z);
+        Vector3 inputDirection = new Vector3(-_inputVector.x * moveSpeed * Time.fixedDeltaTime, _rb.velocity.y, -_inputVector.z * moveSpeed * Time.fixedDeltaTime);
 
-        _rb.velocity = new Vector3(-_inputVector.x * moveSpeed * Time.fixedDeltaTime,
-            _rb.velocity.y, -_inputVector.z * moveSpeed * Time.fixedDeltaTime);
-        if (_isCrouch)
-        {
-            transform.localScale = new Vector3(_originalScale.x, crouchHeight, _originalScale.z);
-        }
-        else
-        {
-            transform.localScale = _originalScale;
-        }
+        _rb.velocity = inputDirection;
+    }
+    private void LateUpdate()
+    {
+        _rotationAngle = transform.localEulerAngles.y + _cameraInputVector.x * mouseSensitivity;
 
-        if (_isSprint)
-        {
-            //Logic
-        }
-        else
-        {
-            fpsCamera.fieldOfView = _initialFov;
-        }
+        _pitch -= mouseSensitivity * _cameraInputVector.y;
+        _pitch = Mathf.Clamp(_pitch, -maxLookAngle, maxLookAngle);
 
-        if (_isJump && _isGrounded)
-        {
-            //_rb.AddForce(0f, jumpForce * Time.fixedDeltaTime, 0f, ForceMode.Impulse);
-        }
-        else
-        {
-            //Logic
-        }
+        transform.localEulerAngles = new Vector3(0, _rotationAngle, 0);
+        fpsCamera.transform.localEulerAngles = new Vector3(_pitch, 0, 0);
     }
     private void Jump(InputAction.CallbackContext callbackContext)
     {
+        CheckGround();
         if (_isGrounded)
         {
             _rb.AddForce(0f, jumpForce, 0f, ForceMode.Impulse);
         }
-        CheckGround();
-    }
-    private void Jump_cancaled(InputAction.CallbackContext context)
-    {
-        _isJump = false;
     }
     private void CheckGround()
     {
@@ -118,36 +104,43 @@ public class Movement : MonoBehaviour
             _isGrounded = false;
         }
     }
-    private void Crouch(InputAction.CallbackContext obj)
+    private void Crouch(InputAction.CallbackContext callbackContext)
     {
-        _isCrouch = true;
+        transform.localScale = new Vector3(_originalScale.x, crouchHeight, _originalScale.z);
         moveSpeed /= 2;
     }
-    private void Crouch_canceled(InputAction.CallbackContext context)
+    private void Crouch_canceled(InputAction.CallbackContext callbackContext)
     {
-        _isCrouch = false;
+        transform.localScale = _originalScale;
         moveSpeed = _normalSpeed;
     }
-    private void Sprint(InputAction.CallbackContext context)
+    private void Sprint(InputAction.CallbackContext contecallbackContextxt)
     {
-        _isSprint = true;
         moveSpeed *= 2;
-        fpsCamera.fieldOfView = fovWhenSprint;
+        if (dynamicFov)
+        {
+            fpsCamera.fieldOfView = fovWhenSprint;
+        }
     }
-    private void Sprint_canceled(InputAction.CallbackContext context)
+    private void Sprint_canceled(InputAction.CallbackContext callbackContext)
     {
-        _isSprint = false;
         moveSpeed = _normalSpeed;
+        if (dynamicFov)
+        {
+            fpsCamera.fieldOfView = _initialFov;
+        }
     }
 
 
     private void OnDisable()
     {
         _gameInput.Gameplay.Jump.performed -= Jump;
-        _gameInput.Gameplay.Jump.performed -= Jump_cancaled;
 
         _gameInput.Gameplay.Crouch.performed -= Crouch;
         _gameInput.Gameplay.Crouch.canceled -= Crouch_canceled;
+
+        _gameInput.Gameplay.Sprint.performed -= Sprint;
+        _gameInput.Gameplay.Sprint.canceled -= Sprint_canceled;
 
         _gameInput.Disable();
     }
