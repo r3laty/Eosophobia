@@ -136,6 +136,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 4283686020908133520, guid: ee33f2960598a79479c44fd49fddb9b7,
+        type: 3}
+      propertyPath: jumpForce
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4283686020908133520, guid: ee33f2960598a79479c44fd49fddb9b7,
+        type: 3}
+      propertyPath: fovWhenSprint
+      value: 65
+      objectReference: {fileID: 0}
+    - target: {fileID: 4283686020908133520, guid: ee33f2960598a79479c44fd49fddb9b7,
+        type: 3}
+      propertyPath: checkGroundDistance
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5349938502660680395, guid: ee33f2960598a79479c44fd49fddb9b7,
+        type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6091989996789860426, guid: ee33f2960598a79479c44fd49fddb9b7,
         type: 3}
       propertyPath: m_LocalPosition.x

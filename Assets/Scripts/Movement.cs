@@ -10,6 +10,9 @@ public class Movement : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float crouchHeight = 0.5f;
+    [Header("Jump")]
+    [SerializeField] private float jumpForce = 5f;
+    [SerializeField, Min(0.1f)] private float checkGroundDistance = 1f;
 
     private NewInputSystem _gameInput;
     private Rigidbody _rb;
@@ -19,9 +22,12 @@ public class Movement : MonoBehaviour
 
     private bool _isCrouch;
     private bool _isSprint;
+    private bool _isJump;
+    private bool _isGrounded;
 
     private float _normalSpeed;
     private float _initialFov;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -57,7 +63,6 @@ public class Movement : MonoBehaviour
 
         _rb.velocity = new Vector3(-_inputVector.x * moveSpeed * Time.fixedDeltaTime,
             _rb.velocity.y, -_inputVector.z * moveSpeed * Time.fixedDeltaTime);
-
         if (_isCrouch)
         {
             transform.localScale = new Vector3(_originalScale.x, crouchHeight, _originalScale.z);
@@ -74,16 +79,44 @@ public class Movement : MonoBehaviour
         else
         {
             fpsCamera.fieldOfView = _initialFov;
-            
+        }
+
+        if (_isJump && _isGrounded)
+        {
+            //_rb.AddForce(0f, jumpForce * Time.fixedDeltaTime, 0f, ForceMode.Impulse);
+        }
+        else
+        {
+            //Logic
         }
     }
     private void Jump(InputAction.CallbackContext callbackContext)
     {
-
+        if (_isGrounded)
+        {
+            _rb.AddForce(0f, jumpForce, 0f, ForceMode.Impulse);
+        }
+        CheckGround();
     }
     private void Jump_cancaled(InputAction.CallbackContext context)
     {
+        _isJump = false;
+    }
+    private void CheckGround()
+    {
+        Vector3 origin = new Vector3(transform.position.x, transform.position.y - (transform.localScale.y * .5f), transform.position.z);
+        Vector3 direction = transform.TransformDirection(Vector3.down);
+        float distance = checkGroundDistance;
 
+        if (Physics.Raycast(origin, direction, out RaycastHit hit, distance))
+        {
+            Debug.DrawRay(origin, direction * distance, Color.red);
+            _isGrounded = true;
+        }
+        else
+        {
+            _isGrounded = false;
+        }
     }
     private void Crouch(InputAction.CallbackContext obj)
     {
