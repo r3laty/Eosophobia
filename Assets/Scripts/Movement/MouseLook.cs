@@ -9,17 +9,11 @@ public class MouseLook : MonoBehaviour
 
     private Transform _playerBody;
 
-    private InputActions _gameInput;
-
     private float _xRotation;
     private void Awake()
     {
         _playerController = GetComponentInParent<PlayerController>();
         _playerBody = _playerController.transform;
-    }
-    private void Start()
-    {
-        _gameInput = _playerController.GameInput;
     }
     private void Update()
     {
@@ -27,7 +21,7 @@ public class MouseLook : MonoBehaviour
     }
     private void CameraFpsController()
     {
-        Vector2 cameraInput = _gameInput.Gameplay.MouseLook.ReadValue<Vector2>();
+        Vector2 cameraInput = InputManager.Instance.CameraLookVector();
 
         float mouseX = cameraInput.x * mouseSensitivity * Time.fixedDeltaTime;
         float mouseY = cameraInput.y * mouseSensitivity * Time.fixedDeltaTime;
@@ -37,9 +31,5 @@ public class MouseLook : MonoBehaviour
 
         transform.localRotation = Quaternion.Euler(_xRotation, 0, 0);
         _playerBody.Rotate(Vector3.up * mouseX);
-    }
-    private void OnDisable()
-    {
-        _gameInput.Disable();
     }
 }

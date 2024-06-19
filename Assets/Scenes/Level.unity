@@ -123,6 +123,50 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &1632128978
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1632128979}
+  - component: {fileID: 1632128980}
+  m_Layer: 0
+  m_Name: InputManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1632128979
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1632128978}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.3294213, y: 2.0206778, z: 29.58644}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1632128980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1632128978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf6cc3f4f9230d4488ae96b9b0f8e71e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2059163485 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 524443089816287624, guid: ec534f7e2b4b12a4a864976280565f44,
@@ -1371,6 +1415,11 @@ PrefabInstance:
       propertyPath: moveSpeed
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 524443089816287624, guid: ec534f7e2b4b12a4a864976280565f44,
+        type: 3}
+      propertyPath: groundCheckRadius
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 4802982487457643148, guid: ec534f7e2b4b12a4a864976280565f44,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1443,3 +1492,4 @@ SceneRoots:
   m_Roots:
   - {fileID: 1158479411955693827}
   - {fileID: 2543235005392399974}
+  - {fileID: 1632128979}

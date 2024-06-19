@@ -5,21 +5,23 @@ public class PlayerController : MonoBehaviour
     public InputActions GameInput;
 
     [SerializeField] private Transform groundCheck;
+    [SerializeField] private float groundCheckRadius;
     [SerializeField] private LayerMask groundLayer;
     [Space]
     [SerializeField] private float moveSpeed;
     [SerializeField] private float jumpForce;
 
-    private CharacterController _controller;
+    private CharacterController _characterController;
+    
     private Vector2 _inputVector;
     private Vector3 _velocity;
+
     private float _gravity = -9.81f;
+    
     private bool _isGrounded;
     private void Awake()
     {
-        _controller = GetComponent<CharacterController>();
-        GameInput = new InputActions();
-        GameInput.Enable();
+        _characterController = GetComponent<CharacterController>();
 
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -32,7 +34,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Gravity()
     {
-        _isGrounded = Physics.CheckSphere(groundCheck.position, 10, groundLayer);
+        _isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLayer);
 
         if (_isGrounded && _velocity.y < 0)
         {
@@ -40,25 +42,20 @@ public class PlayerController : MonoBehaviour
         }
 
         _velocity.y += _gravity * Time.deltaTime;
-        _controller.Move(_velocity * Time.deltaTime);
+        _characterController.Move(_velocity * Time.deltaTime);
     }
     private void PlayerMovement()
     {
-        _inputVector = GameInput.Gameplay.Movement.ReadValue<Vector2>();
+        _inputVector = InputManager.Instance.MovementVector();
 
         Vector3 movement = (_inputVector.y * transform.forward) + (_inputVector.x * transform.right);
-        _controller.Move(movement * moveSpeed * Time.deltaTime);
+        _characterController.Move(movement * moveSpeed * Time.deltaTime);
     }
     private void Jump()
     {
-        if(GameInput.Gameplay.Jump.triggered)
+        if (InputManager.Instance.JumpInput() && _isGrounded)
         {
             _velocity.y = Mathf.Sqrt(jumpForce * -2f * _gravity);
         }
-    }
-
-    private void OnDisable()
-    {
-        GameInput.Disable();
     }
 }
