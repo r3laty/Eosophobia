@@ -112,6 +112,74 @@
                     "isPartOfComposite": true
                 }
             ]
+        },
+        {
+            "name": "InGameUi",
+            "id": "4c1a475a-3125-4517-a1f6-f89ed6d52046",
+            "actions": [
+                {
+                    "name": "WeaponChangeKeyOne",
+                    "type": "Button",
+                    "id": "81fa2ef6-7c9c-4dd2-8e40-69f3d69ff968",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "WeaponChangeKeyTwo",
+                    "type": "Button",
+                    "id": "e4e36bfb-7f50-48d6-add2-cf659c1c4691",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "WeaponChangeKeyThree",
+                    "type": "Button",
+                    "id": "45f0e557-a559-4bf2-a516-8fbcf9ebbe7b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ea127d2d-9932-4ecd-a924-7f5efe5bc60a",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "WeaponChangeKeyOne",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0cd66ada-7dfe-43b0-994b-7ddc197f353f",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "WeaponChangeKeyTwo",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "09f954d6-abed-4ff0-bb1d-6f48c59d6455",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "WeaponChangeKeyThree",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

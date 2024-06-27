@@ -134,6 +134,74 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""InGameUi"",
+            ""id"": ""4c1a475a-3125-4517-a1f6-f89ed6d52046"",
+            ""actions"": [
+                {
+                    ""name"": ""WeaponChangeKeyOne"",
+                    ""type"": ""Button"",
+                    ""id"": ""81fa2ef6-7c9c-4dd2-8e40-69f3d69ff968"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WeaponChangeKeyTwo"",
+                    ""type"": ""Button"",
+                    ""id"": ""e4e36bfb-7f50-48d6-add2-cf659c1c4691"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WeaponChangeKeyThree"",
+                    ""type"": ""Button"",
+                    ""id"": ""45f0e557-a559-4bf2-a516-8fbcf9ebbe7b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""ea127d2d-9932-4ecd-a924-7f5efe5bc60a"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WeaponChangeKeyOne"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0cd66ada-7dfe-43b0-994b-7ddc197f353f"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WeaponChangeKeyTwo"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""09f954d6-abed-4ff0-bb1d-6f48c59d6455"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WeaponChangeKeyThree"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -143,6 +211,11 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Gameplay_Movement = m_Gameplay.FindAction("Movement", throwIfNotFound: true);
         m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
         m_Gameplay_MouseLook = m_Gameplay.FindAction("MouseLook", throwIfNotFound: true);
+        // InGameUi
+        m_InGameUi = asset.FindActionMap("InGameUi", throwIfNotFound: true);
+        m_InGameUi_WeaponChangeKeyOne = m_InGameUi.FindAction("WeaponChangeKeyOne", throwIfNotFound: true);
+        m_InGameUi_WeaponChangeKeyTwo = m_InGameUi.FindAction("WeaponChangeKeyTwo", throwIfNotFound: true);
+        m_InGameUi_WeaponChangeKeyThree = m_InGameUi.FindAction("WeaponChangeKeyThree", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -262,10 +335,78 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         }
     }
     public GameplayActions @Gameplay => new GameplayActions(this);
+
+    // InGameUi
+    private readonly InputActionMap m_InGameUi;
+    private List<IInGameUiActions> m_InGameUiActionsCallbackInterfaces = new List<IInGameUiActions>();
+    private readonly InputAction m_InGameUi_WeaponChangeKeyOne;
+    private readonly InputAction m_InGameUi_WeaponChangeKeyTwo;
+    private readonly InputAction m_InGameUi_WeaponChangeKeyThree;
+    public struct InGameUiActions
+    {
+        private @InputActions m_Wrapper;
+        public InGameUiActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @WeaponChangeKeyOne => m_Wrapper.m_InGameUi_WeaponChangeKeyOne;
+        public InputAction @WeaponChangeKeyTwo => m_Wrapper.m_InGameUi_WeaponChangeKeyTwo;
+        public InputAction @WeaponChangeKeyThree => m_Wrapper.m_InGameUi_WeaponChangeKeyThree;
+        public InputActionMap Get() { return m_Wrapper.m_InGameUi; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(InGameUiActions set) { return set.Get(); }
+        public void AddCallbacks(IInGameUiActions instance)
+        {
+            if (instance == null || m_Wrapper.m_InGameUiActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_InGameUiActionsCallbackInterfaces.Add(instance);
+            @WeaponChangeKeyOne.started += instance.OnWeaponChangeKeyOne;
+            @WeaponChangeKeyOne.performed += instance.OnWeaponChangeKeyOne;
+            @WeaponChangeKeyOne.canceled += instance.OnWeaponChangeKeyOne;
+            @WeaponChangeKeyTwo.started += instance.OnWeaponChangeKeyTwo;
+            @WeaponChangeKeyTwo.performed += instance.OnWeaponChangeKeyTwo;
+            @WeaponChangeKeyTwo.canceled += instance.OnWeaponChangeKeyTwo;
+            @WeaponChangeKeyThree.started += instance.OnWeaponChangeKeyThree;
+            @WeaponChangeKeyThree.performed += instance.OnWeaponChangeKeyThree;
+            @WeaponChangeKeyThree.canceled += instance.OnWeaponChangeKeyThree;
+        }
+
+        private void UnregisterCallbacks(IInGameUiActions instance)
+        {
+            @WeaponChangeKeyOne.started -= instance.OnWeaponChangeKeyOne;
+            @WeaponChangeKeyOne.performed -= instance.OnWeaponChangeKeyOne;
+            @WeaponChangeKeyOne.canceled -= instance.OnWeaponChangeKeyOne;
+            @WeaponChangeKeyTwo.started -= instance.OnWeaponChangeKeyTwo;
+            @WeaponChangeKeyTwo.performed -= instance.OnWeaponChangeKeyTwo;
+            @WeaponChangeKeyTwo.canceled -= instance.OnWeaponChangeKeyTwo;
+            @WeaponChangeKeyThree.started -= instance.OnWeaponChangeKeyThree;
+            @WeaponChangeKeyThree.performed -= instance.OnWeaponChangeKeyThree;
+            @WeaponChangeKeyThree.canceled -= instance.OnWeaponChangeKeyThree;
+        }
+
+        public void RemoveCallbacks(IInGameUiActions instance)
+        {
+            if (m_Wrapper.m_InGameUiActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IInGameUiActions instance)
+        {
+            foreach (var item in m_Wrapper.m_InGameUiActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_InGameUiActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public InGameUiActions @InGameUi => new InGameUiActions(this);
     public interface IGameplayActions
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnMouseLook(InputAction.CallbackContext context);
+    }
+    public interface IInGameUiActions
+    {
+        void OnWeaponChangeKeyOne(InputAction.CallbackContext context);
+        void OnWeaponChangeKeyTwo(InputAction.CallbackContext context);
+        void OnWeaponChangeKeyThree(InputAction.CallbackContext context);
     }
 }

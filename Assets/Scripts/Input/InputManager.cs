@@ -35,6 +35,27 @@ public class InputManager : MonoBehaviour
             return false;
         }
     }
+    public Keys SwitchWeaponsInput()
+    {
+        if (_gameInput.InGameUi.WeaponChangeKeyOne.triggered)
+        {
+            return Keys.KeyOne;
+        }
+
+        else if (_gameInput.InGameUi.WeaponChangeKeyTwo.triggered)
+        {
+            return Keys.KeyTwo;
+        }
+
+        else if (_gameInput.InGameUi.WeaponChangeKeyThree.triggered)
+        {
+            return Keys.KeyThree;
+        }
+        else
+        {
+            return Keys.Null;
+        }
+    }
     private void OnDisable()
     {
         _gameInput.Disable();
