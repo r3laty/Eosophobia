@@ -244,7 +244,7 @@ PrefabInstance:
     - target: {fileID: 300109260241682377, guid: ec534f7e2b4b12a4a864976280565f44,
         type: 3}
       propertyPath: m_Name
-      value: StrongGuy Variant
+      value: StrongGuy
       objectReference: {fileID: 0}
     - target: {fileID: 300109260241682377, guid: ec534f7e2b4b12a4a864976280565f44,
         type: 3}
@@ -337,11 +337,11 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3758884717332501705, guid: ec534f7e2b4b12a4a864976280565f44,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3690461557922664206}
+      addedObject: {fileID: 6441320200922671085}
     - targetCorrespondingSourceObject: {fileID: 3758884717332501705, guid: ec534f7e2b4b12a4a864976280565f44,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6441320200922671085}
+      addedObject: {fileID: 3690461557922664206}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 300109260241682377, guid: ec534f7e2b4b12a4a864976280565f44,
         type: 3}

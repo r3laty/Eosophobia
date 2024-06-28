@@ -35,25 +35,36 @@ public class InputManager : MonoBehaviour
             return false;
         }
     }
-    public Keys SwitchWeaponsInput()
+    public InputKeys SwitchWeaponsInput()
     {
         if (_gameInput.InGameUi.WeaponChangeKeyOne.triggered)
         {
-            return Keys.KeyOne;
+            return InputKeys.KeyOne;
         }
 
         else if (_gameInput.InGameUi.WeaponChangeKeyTwo.triggered)
         {
-            return Keys.KeyTwo;
+            return InputKeys.KeyTwo;
         }
 
         else if (_gameInput.InGameUi.WeaponChangeKeyThree.triggered)
         {
-            return Keys.KeyThree;
+            return InputKeys.KeyThree;
         }
         else
         {
-            return Keys.Null;
+            return InputKeys.Null;
+        }
+    }
+    public bool ShootInput()
+    {
+        if (_gameInput.Gameplay.Attack.triggered)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
     private void OnDisable()

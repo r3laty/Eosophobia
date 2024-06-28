@@ -12,7 +12,7 @@ public class HealthController : MonoBehaviour
     public void ReceiveDamage(float damage)
     {
         Health -= damage;
-        Debug.Log($"Hp {Health}");
+        Debug.Log($"Character {gameObject.name} \nHp {Health}");
         CheckIsDied();
     }
     private void CheckIsDied()

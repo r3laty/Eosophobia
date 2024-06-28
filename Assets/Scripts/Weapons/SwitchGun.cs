@@ -4,12 +4,14 @@ using UnityEngine;
 public class SwitchGun : MonoBehaviour
 {
     [SerializeField] private List<GunController> weapons;
+    [Space]
+    [SerializeField] private PlayerAttack playerAttack;
 
     private InputManager _inputManager;
     private int _currentGunId;
 
     private int _melleeWeaponId = 0;
-    private int _middleWeaponId = 1;
+    private int _heavyWeaponId = 1;
     private int _pistolId = 2;
     private void Start()
     {
@@ -20,25 +22,27 @@ public class SwitchGun : MonoBehaviour
     {
         switch (_inputManager.SwitchWeaponsInput())
         {
-            case Keys.KeyOne:
+            case InputKeys.KeyOne:
                 Switch(_melleeWeaponId);
                 break;
 
-            case Keys.KeyTwo:
-                Switch(_middleWeaponId);
+            case InputKeys.KeyTwo:
+                Switch(_heavyWeaponId);
                 break;
 
-            case Keys.KeyThree:
+            case InputKeys.KeyThree:
                 Switch(_pistolId);
                 break;
 
-            case Keys.Null:
-                Debug.Log($"No weapon by id {_currentGunId}");
+            case InputKeys.Null:
+                Debug.Log("No weapon for this button");
                 break;
         }
     }
     private void Switch(int id)
     {
+        playerAttack.ChooseType(id);
+
         weapons[_currentGunId].gameObject.SetActive(false);
 
         weapons[id].gameObject.SetActive(true);

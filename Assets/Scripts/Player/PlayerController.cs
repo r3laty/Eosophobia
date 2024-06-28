@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
     {
         _inputVector = InputManager.Instance.MovementVector();
 
-        Vector3 movement = (_inputVector.y * transform.forward) + (_inputVector.x * transform.right);
+        Vector3 movement = (-_inputVector.y * transform.forward) + (-_inputVector.x * transform.right);
         _characterController.Move(movement * moveSpeed * Time.deltaTime);
     }
     private void Jump()
