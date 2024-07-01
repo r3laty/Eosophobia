@@ -26,7 +26,7 @@ public class Spawner : MonoBehaviour
         {
             float randomPoint = Random.Range(transform.position.x - 10, 10);
             _pointToSpawn = new Vector3(randomPoint, transform.position.y, randomPoint);
-            ObjectPool.PoolInstantiate(enemy, _pointToSpawn);
+            ObjectPool.PoolInstantiate(enemy.gameObject, _pointToSpawn);
             yield return new WaitForSeconds(spawnInterval);
         }
     }

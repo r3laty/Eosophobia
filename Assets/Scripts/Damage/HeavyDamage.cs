@@ -1,8 +1,9 @@
+using System.Collections;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 public class HeavyDamage : DamageDealer
 {
-    //[Space]
-    //[SerializeField] private ParticleSystem fireEffect;
+
     [SerializeField] private GameObject bullet;
     [Space]
     [SerializeField] private float bulletsPerShot = 6;
@@ -10,9 +11,14 @@ public class HeavyDamage : DamageDealer
     [SerializeField] private Camera fpsCamera;
     [Space]
     [SerializeField] private float fireRange;
-    
+    [Space]
+    [SerializeField] private float rechargingTime = 1.2f;
+
     private float _damage;
     private RaycastHit _raycastHit;
+    private HealthController _enemyHealth;
+    private bool _isReadyForShot = true;
+
     private void Start()
     {
         _damage = Damage;
@@ -20,13 +26,31 @@ public class HeavyDamage : DamageDealer
 
     public void Shot()
     {
-        for (int bulletCounter = 0; bulletCounter < bulletsPerShot; bulletCounter++)
+        if (_isReadyForShot)
         {
-            if (Physics.Raycast(fpsCamera.transform.position, GetShootingDirection(), out _raycastHit, fireRange))
+            for (int bulletCounter = 0; bulletCounter < bulletsPerShot; bulletCounter++)
             {
-                Instantiate(bullet, _raycastHit.point, Quaternion.identity);
-                Debug.DrawLine(fpsCamera.transform.position, _raycastHit.point, Color.green, 1f);
+                if (Physics.Raycast(fpsCamera.transform.position, GetShootingDirection(), out _raycastHit, fireRange))
+                {
+                    Instantiate(bullet, _raycastHit.point, Quaternion.identity);
+
+                    if (_raycastHit.collider.CompareTag(enemyTag.ToString()))
+                    {
+                        _raycastHit.collider.TryGetComponent<HealthController>(out _enemyHealth);
+                    }
+                }
             }
+            if (_enemyHealth != null)
+            {
+                _enemyHealth.ReceiveDamage(_damage);
+            }
+            else
+            {
+                Debug.Log("CANT FIND HEALTH CONTROLLER");
+            }
+
+            _isReadyForShot = false;
+            StartCoroutine(RechargeGun());
         }
     }
     private Vector3 GetShootingDirection()
@@ -38,5 +62,12 @@ public class HeavyDamage : DamageDealer
 
         direction += spread.normalized * Random.Range(0f, 0.2f);
         return direction;
+    }
+    private IEnumerator RechargeGun()
+    {
+        yield return new WaitForEndOfFrame();
+        _enemyHealth = null;
+        yield return new WaitForSeconds(rechargingTime);
+        _isReadyForShot = true;
     }
 }

@@ -5,7 +5,7 @@ public class DamageDealer : MonoBehaviour
     public float Damage { get; private set; }
 
     [SerializeField] private float damage;
-    [SerializeField] private TagManager enemyTag;
+    [SerializeField] protected TagManager enemyTag;
 
     private bool _enemy;
     private HealthController _healthController;

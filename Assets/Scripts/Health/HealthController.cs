@@ -19,7 +19,7 @@ public class HealthController : MonoBehaviour
     {
         if (Health <= 0)
         {
-            gameObject.SetActive(false);
+            ObjectPool.PoolDestroy(gameObject);
         }
     }
 }
