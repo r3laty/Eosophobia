@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerAttack : MonoBehaviour
 {
     [SerializeField] private MelleeDamage melleeGun;
+    [SerializeField] private HeavyDamage heavyGun;
 
     private InputManager _inputManager;
     private int _gunId;
@@ -29,6 +30,9 @@ public class PlayerAttack : MonoBehaviour
                 melleeGun.DealDamage();
                 break;
 
+            case 1:
+                heavyGun.Shot();
+                break;
         }
     }
 }
